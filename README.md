@@ -2,6 +2,7 @@
 My teacher told me he was waiting for is new website to come out, so I asked him to do the purchase system as my final project.
 
 ## Domain
+![domain](https://raw.githubusercontent.com/camillerheaumet/jujitsu_mod_5/domain.jpg)
 
 
 ## User story
