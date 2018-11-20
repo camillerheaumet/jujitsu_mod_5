@@ -15,5 +15,6 @@ The website exemple (started by someone else): http://ljj.shinchy.com/
 - React
 
 ## Project schedule
+MVP : Fully funtional web site, and fully functional purchase/payment system.
 
 As a stretch, I would like to allow my teacher to have an admin user, so he can make changes to the website as much as he wants.
