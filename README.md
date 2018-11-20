@@ -2,8 +2,7 @@
 My teacher told me he was waiting for is new website to come out, so I asked him to do the purchase system as my final project.
 
 ## Domain
-![Domain](domain.png)
-
+![Domain](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/domain.jpg?raw=true)
 
 ## User story
 A user can login/signin(log out), is able to purchase videos and download them as much as they want.
