@@ -11,6 +11,7 @@ A user can login/signin(log out), is able to purchase videos and download them a
 ![sign](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/Sign.png?raw=true)
 ![home](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/home.png?raw=true)
 ![basket](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/basket.png?raw=true)
+![payment](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/payment.png?raw=true)
 ![videos](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/videos.png?raw=true)
 ![account](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/account.png?raw=true)
 ![modify](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/modify.png?raw=true)
