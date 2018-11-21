@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # London Ju Jitsu new website
 My teacher told me he was waiting for is new website to come out, so I asked him to do the purchase system as my final project.
 
@@ -23,3 +24,6 @@ MVP : Fully functional purchase/payment system.
 As a streatch, I would like to integrate
 
 As a further stretch, I would like to allow my teacher to have an admin user, so he can make changes to the website as much as he wants.
+=======
+# jujitsu_mod_5
+>>>>>>> 28b60fcbcf6505e307fb6b3bac08c1f03da68e3f
