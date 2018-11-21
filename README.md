@@ -26,8 +26,8 @@ The website that needs to have that purchase system: http://ljj.shinchy.com/
 - React
 
 ## Project schedule
-MVP : Fully functional purchase/payment system.
+MVP for wednesday: Fully functional purchase/payment system. (hopefuly with stripe integrated)
 
-As a streatch, I would like to integrate
+As a streatch, I would like to integrate the information part of the website.
 
 As a further stretch, I would like to allow my teacher to have an admin user, so he can make changes to the website as much as he wants.
