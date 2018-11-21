@@ -8,6 +8,14 @@ My teacher told me he was waiting for is new website to come out, so I asked him
 A user can login/signin(log out), is able to purchase videos and download them as much as they want.
 
 ## Wire-Frames
+![sign](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/Sign.png?raw=true)
+![home](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/home.png?raw=true)
+![basket](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/basket.png?raw=true)
+![payment](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/payment.png?raw=true)
+![videos](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/videos.png?raw=true)
+![account](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/account.png?raw=true)
+![modify](https://github.com/camillerheaumet/jujitsu_mod_5/blob/master/project%205/modify.png?raw=true)
+
 Current Website: http://www.londonjujitsu.com/Index.htm
 
 The website that needs to have that purchase system: http://ljj.shinchy.com/
@@ -18,8 +26,8 @@ The website that needs to have that purchase system: http://ljj.shinchy.com/
 - React
 
 ## Project schedule
-MVP : Fully functional purchase/payment system.
+MVP for wednesday: Fully functional purchase/payment system. (hopefuly with stripe integrated)
 
-As a streatch, I would like to integrate
+As a streatch, I would like to integrate the information part of the website.
 
 As a further stretch, I would like to allow my teacher to have an admin user, so he can make changes to the website as much as he wants.
