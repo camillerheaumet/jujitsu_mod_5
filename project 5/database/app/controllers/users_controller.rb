@@ -24,9 +24,11 @@ class UsersController < ApplicationController
     end
 
     def edit
+    render json: @user
     end
 
     def update
+
         # quelquechoses
     end
 
