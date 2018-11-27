@@ -1,45 +1,21 @@
 import React from 'react'
 
-import API from '../API'
-
-import TextField from '@material-ui/core/TextField'
-import Button from '@material-ui/core/Button'
-
 class SignInForm extends React.Component {
-  state = {
-    email: '',
-    password: ''
-  }
-
-  handleSubmit = () => {
-    const { email, password } = this.state
-    API.signin(email, password)
-      .then(data => {
-        if (data.error) {
-          alert('Wrong!')
-        } else {
-          this.props.signin(data)
-        }
-      })
-  }
-
-  handleChange = event =>
-    this.setState({ [event.target.name]: event.target.value })
-
   render () {
-    const { email, password } = this.state
-    const { handleChange, handleSubmit } = this
-
+    const { signInExistingUser } = this.props
     return (
       <div>
-        <TextField id='emailInput' label='email' value={email} onChange={handleChange} margin='normal'name='email'/>
-        <br />
-        <TextField id='passwordInput' label='Password' value={password} onChange={handleChange} margin='normal' name='password' type='password' />
-        <br />
-        <Button onClick={handleSubmit} variant='contained' color='primary'>
-          SUBMIT
-        </Button>
-      </div>
+        <h2>Sign In</h2>
+        <form onSubmit={event => signInExistingUser(event)} className='formContainer'>
+          <label className='sign-in' htmlFor='email'><b>Email address</b></label>
+          <input className='sign-in' type='text' placeholder='Enter Store Name' name='email' required />
+
+          <label className='sign-in' htmlFor='psw'><b>Password</b></label>
+          <input className='sign-in' type='password' placeholder='Enter Password' name='psw' required />
+
+          <button type='submit'>Sign In</button>
+      </form>
+    </div>
     )
   }
 }

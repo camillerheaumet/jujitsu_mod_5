@@ -1,4 +1,4 @@
-class PurchaseController < ApplicationController
+class PurchasesController < ApplicationController
     before_action :set_purchase, only: [:show]
 
     def index
@@ -21,6 +21,11 @@ class PurchaseController < ApplicationController
         else
         render json: {error: 'This purchase is not valid'}
         end
+    end
+
+    def user_purchases
+        user = get_current_user
+        render json: user.videos
     end
 
     private

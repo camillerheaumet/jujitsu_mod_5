@@ -18,6 +18,6 @@ class ApplicationController < ActionController::API
     end
     
     def secret
-        ENV['API_SECRET']
+        "cam"
     end
 end

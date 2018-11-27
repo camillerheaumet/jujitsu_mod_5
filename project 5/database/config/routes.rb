@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   resources :purchases
   resources :videos
 
-  # post 'signin', to: 'users#sign_in'
-  # get 'validate', to: 'users#validate'
-  # get 'items', to: 'users#get_items'
+   post 'signin', to: 'users#sign_in'
+   get 'validate', to: 'users#validate'
+   get 'user_videos', to: 'purchases#user_purchases'
 end
