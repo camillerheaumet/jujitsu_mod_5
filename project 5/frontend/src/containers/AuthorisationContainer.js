@@ -1,6 +1,7 @@
 import React from 'react'
 
 import SignInForm from '../components/SignInForm'
+import SignUpForm from '../components/SignUpForm'
 
 import API from '../API'
 
@@ -23,11 +24,10 @@ class AuthorisationContainer extends React.Component {
   }
 
   validateSignUp = (resp) => {
-    if (resp.error) {
-      this.setState({error: resp.error})
+    if (resp.errors) {
+      alert(resp.errors)
     } else {
-      this.setState({email: resp.email, password: resp.password})
-      this.props.signInUser(resp.email, resp.password)
+      this.props.signin(resp)
     }
   }
 
@@ -37,7 +37,7 @@ class AuthorisationContainer extends React.Component {
       API.login(this.state.email, this.state.password)
       .then(data => {
         if (data.error) {
-          alert('Wrong!')
+          alert('Wrong combination email/password')
         } else {
           this.props.signin(data)
         }
@@ -50,7 +50,9 @@ class AuthorisationContainer extends React.Component {
 
     return (
       <div>
-      <SignInForm handleSubmit={this.signUpNewUser} signInExistingUser={this.signInExistingUser}/>
+      <SignInForm signInExistingUser={this.signInExistingUser}/>
+      <h2>Or</h2>
+      <SignUpForm handleSubmit={this.signUpNewUser}/>
       </div>
     )
   }

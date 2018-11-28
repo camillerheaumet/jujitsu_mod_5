@@ -1,11 +1,4 @@
 class API {
-    static init () {
-      this.baseUrl = 'http://localhost:3001'
-      this.signinUrl = this.baseUrl + '/signin'
-      this.validateUrl = this.baseUrl + '/validate'
-      this.myVideosUrl = this.baseUrl + '/my_videos'
-    }
-  
     static login (email, password) {
       return fetch('http://localhost:3001/signin', {
         method: 'POST',
@@ -19,7 +12,7 @@ class API {
   
     static validate () {
       const token = localStorage.getItem('token')
-      return fetch(this.validateUrl, {
+      return fetch('http://localhost:3001/validate', {
         headers: {'Authorization': token}
       }).then(resp => resp.json())
     }
@@ -34,7 +27,7 @@ class API {
         return fetch('http://localhost:3001/users', {
           method: 'POST',
           headers: {'Content-Type': 'application/json'},
-          body: JSON.stringify(newUser)
+          body: JSON.stringify({user: newUser})
         }).then(resp => resp.json())
     }
 
@@ -42,9 +35,15 @@ class API {
         return fetch('http://localhost:3001/videos', {
         }).then(resp => resp.json())
     }
+
+    static createPurchase (newPur) {
+        return fetch('http://localhost:3001/purchases', {
+          method: 'POST',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify(newPur)
+        }).then(resp => resp.json())
+    }
   }
-  
-  API.init()
   
   window.API = API
   

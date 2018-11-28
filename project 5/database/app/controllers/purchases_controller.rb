@@ -15,12 +15,14 @@ class PurchasesController < ApplicationController
     end
 
     def create
-        @purchase = Purchase.new(purchase_params)
-        if @purchase.save
-        render json: @purchase
-        else
-        render json: {error: 'This purchase is not valid'}
+        params[:video_ids].each do |video|
+            @purchase = Purchase.new(user_id: params[:user_id], video_id: video)
+            if !@purchase.save
+                render json: {error: 'This purchase is not valid'}
+            end
         end
+        
+        render json: @purchase
     end
 
     def user_purchases
@@ -30,10 +32,10 @@ class PurchasesController < ApplicationController
 
     private
     def purchase_params
-        params.require(:purchase).permit(:user_id, :video_id, :total)
+        params.require(:purchase).permit(:user_id, :video_id)
     end
 
     def set_purchase
-        @purchase = purchase.find(params[:id])
+        @purchase = Purchase.find(params[:id])
     end
 end

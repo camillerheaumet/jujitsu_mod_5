@@ -7,7 +7,7 @@ import API from '../API'
 
 class VideosContainers extends React.Component {
     state = {
-        videos: []
+        videos: [],
     }
     
     getAllVideo() {
@@ -31,12 +31,13 @@ class VideosContainers extends React.Component {
 
     render () {
         const { videos } = this.state
-        const { currentPurchase, addToPurchase } = this.props
+        const { currentPurchase, addToPurchase, currentUserVideos, removefromPurchase } = this.props
         return (
         <div>
             <h1>All videos</h1>
             { videos.length === 0 && <p>Sorry, there is no videos.</p>}
-            {videos.map(video => <Videos video={video} key={video.id} currentPurchase={currentPurchase} addToPurchase={addToPurchase}/>)}
+            {videos.map(video => <Videos video={video} key={video.id} currentPurchase={currentPurchase} 
+                addToPurchase={addToPurchase} currentUserVideos={currentUserVideos} removefromPurchase={removefromPurchase}/>)}
         </div>)
     }
 }

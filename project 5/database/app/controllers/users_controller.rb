@@ -12,18 +12,18 @@ class UsersController < ApplicationController
     def sign_in
         user = User.find_by(email: params[:email])
         if user && user.authenticate(params[:password])
-          render json: {name: user.name, email: user.email, token: issue_token({id: user.id})}
+          render json: {id: user.id, name: user.name, email: user.email, token: issue_token({id: user.id})}
         else
-          render json: {error: 'Invalid email/password combination.'}, status: 400
+          render json: {errors: 'Invalid email/password combination.'}, status: 400
         end
       end
     
       def validate
         user = get_current_user
         if user
-          render json: {email: user.email, token: issue_token({id: user.id})}
+          render json: {id: user.id, name: user.name, email: user.email, token: issue_token({id: user.id})}
         else
-          render json: {error: 'User not found.'}, status: 400
+          render json: {errors: 'User not found.'}, status: 400
         end
       end
     
@@ -32,7 +32,7 @@ class UsersController < ApplicationController
         if user
           render json: user.videos
         else
-          render json: {error: 'You are not signed in.'} 
+          render json: {errors: 'You are not signed in.'} 
         end  
       end
 
@@ -46,7 +46,8 @@ class UsersController < ApplicationController
         if @user.save
             render json: @user
         else
-            render json: {error: 'This user already exists'}
+            render json: {errors: @user.errors.full_messages}
+            # 'This email already used for an other account'}
         end
     end
 
@@ -59,7 +60,7 @@ class UsersController < ApplicationController
         if @user.valide?
             render json: @user
         else
-            render json: {error: 'Error'}
+            render json: {errors: 'Error'}
         end
     end
 

@@ -12,17 +12,21 @@ class App extends React.Component {
 
   state = {
     currentUser: {
+      id: null,
       name: null,
       email: null
     },
-    currentPurchase: []
+    currentPurchase: [],
+    currentUserVideos: []
   }
 
   signin = (user) => {
     localStorage.setItem('token', user.token)
     this.setState({ currentUser: {
+      id: user.id,
       name: user.name,
-      email: user.email}}, () => {
+      email: user.email}},() =>{
+        this.getUserVideo()
         this.props.history.push('/home')
       })
   }
@@ -30,8 +34,11 @@ class App extends React.Component {
   signout = () => {
     localStorage.removeItem('token')
     this.setState({ currentUser: {
+      id: null,
       name: null,
-     email: null }})
+     email: null },
+     currentPurchase: [],
+     currentUserVideos: []})
     this.props.history.push('/signin')
   }
 
@@ -39,8 +46,8 @@ class App extends React.Component {
     if (!localStorage.getItem('token')) return
     API.validate()
       .then(user => {
-        this.signin(user)
-        this.setState({})
+        this.signin(user);
+        
       })
       .catch(error => this.props.history.push('/signin'))
   }
@@ -62,15 +69,27 @@ class App extends React.Component {
     this.setState({currentPurchase: []})
   }
 
+  getUserVideo() {
+    API.getUserVideos()
+      .then(data => {
+        if (data.error) {
+          alert('You are not signed in')
+        } else {
+          this.setState({ currentUserVideos: data })
+        }
+      })
+  }
+
   render() {
-    const { currentUser, currentPurchase } = this.state
+    const { currentUser, currentPurchase, currentUserVideos } = this.state
     const { signin, signout, addToPurchase, removefromPurchase, handleDeleteAllButton } = this
     return (
       <div className="App">
         <Route path='/' render={() => <Navbar currentUser={currentUser} currentPurchase={currentPurchase} signout={signout} /> } />
-        <Route exact path='/my_videos' render={props => <MyVideosContainer {...props} currentUser={currentUser} />} />
+        <Route exact path='/my_videos' render={props => <MyVideosContainer {...props} currentUser={currentUser} currentUserVideos={currentUserVideos}/>} />
         <Route path='/signin' render={props => <AuthorisationContainer {...props} signin={signin} />} />
-        <Route exact path='/home' render={props => <VideosContainer {...props} currentUser={currentUser} currentPurchase={currentPurchase} addToPurchase={addToPurchase}/>} />
+        <Route exact path='/home' render={props => <VideosContainer {...props} currentUser={currentUser} currentPurchase={currentPurchase} 
+          addToPurchase={addToPurchase} removefromPurchase={removefromPurchase} currentUserVideos={currentUserVideos}/>} />
         <Route exact path='/basket' render={props => <Basket {...props} currentUser={currentUser} 
           currentPurchase={currentPurchase} removefromPurchase={removefromPurchase} handleDeleteAllButton={handleDeleteAllButton}/>} />
       </div>
