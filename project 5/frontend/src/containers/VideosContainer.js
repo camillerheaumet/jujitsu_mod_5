@@ -1,5 +1,6 @@
 import React from 'react'
 import Videos from '../components/Videos'
+import CreateVideoForm from '../components/CreateVideoForm'
 
 import API from '../API'
 
@@ -8,6 +9,7 @@ import API from '../API'
 class VideosContainers extends React.Component {
     state = {
         videos: [],
+        addVideo: false
     }
     
     getAllVideo() {
@@ -21,23 +23,29 @@ class VideosContainers extends React.Component {
         })
     }
 
+    handleAddVideoClick = () => {
+        this.setState({addVideo : !this.state.addVideo })
+    }
+
     componentDidMount() {
-        if (!!this.props.email) {
-            this.props.history.push('/signin')
-        } else {
-         this.getAllVideo()
-        }
+        this.getAllVideo()
     }
 
     render () {
-        const { videos } = this.state
-        const { currentPurchase, addToPurchase, currentUserVideos, removefromPurchase } = this.props
+        const { videos, addVideo } = this.state
+        const { currentUser, currentPurchase, addToPurchase, currentUserVideos, removefromPurchase } = this.props
         return (
         <div>
-            <h1>All videos</h1>
-            { videos.length === 0 && <p>Sorry, there is no videos.</p>}
-            {videos.map(video => <Videos video={video} key={video.id} currentPurchase={currentPurchase} 
-                addToPurchase={addToPurchase} currentUserVideos={currentUserVideos} removefromPurchase={removefromPurchase}/>)}
+            <h1>{addVideo ? "Add Video": "All videos"}</h1>
+                {currentUser.admin ?
+                    <button onClick={() => this.handleAddVideoClick()}>{addVideo ? "Cancel" : "Add Video"}</button> : null}
+            { addVideo ? 
+            <div><CreateVideoForm/></div>:
+            <div>
+                { videos.length === 0 && <p>Sorry, there is no videos.</p>}
+                {videos.map(video => <Videos video={video} key={video.id} currentUser={currentUser} currentPurchase={currentPurchase} 
+                    addToPurchase={addToPurchase} currentUserVideos={currentUserVideos} removefromPurchase={removefromPurchase}/>)}
+            </div>}
         </div>)
     }
 }

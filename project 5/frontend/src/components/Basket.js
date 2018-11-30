@@ -16,7 +16,7 @@ class Basket extends React.Component {
                 user_id: this.props.currentUser.id,
                 video_ids: videoIds
             };
-            API.createPurchase(newPur).then(this.props.handleDeleteAllButton())
+            API.createPurchase(newPur).then(window.location.reload())
         } else {
             alert('Your basket is empty')
         }

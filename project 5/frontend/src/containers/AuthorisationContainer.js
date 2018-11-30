@@ -25,7 +25,7 @@ class AuthorisationContainer extends React.Component {
 
   validateSignUp = (resp) => {
     if (resp.errors) {
-      alert(resp.errors)
+      this.props.alertFunc(resp.errors)
     } else {
       this.props.signin(resp)
     }
@@ -37,7 +37,7 @@ class AuthorisationContainer extends React.Component {
       API.login(this.state.email, this.state.password)
       .then(data => {
         if (data.error) {
-          alert('Wrong combination email/password')
+          this.props.alertFunc('Wrong combination email/password')
         } else {
           this.props.signin(data)
         }
@@ -52,7 +52,7 @@ class AuthorisationContainer extends React.Component {
       <div>
       <SignInForm signInExistingUser={this.signInExistingUser}/>
       <h2>Or</h2>
-      <SignUpForm handleSubmit={this.signUpNewUser}/>
+      <SignUpForm handleSubmit={this.signUpNewUser} alertFunc={this.props.alertFunc}/>
       </div>
     )
   }

@@ -7,12 +7,13 @@ class UsersController < ApplicationController
     end
 
     def show
+        render json: @user
     end
 
     def sign_in
         user = User.find_by(email: params[:email])
         if user && user.authenticate(params[:password])
-          render json: {id: user.id, name: user.name, email: user.email, token: issue_token({id: user.id})}
+          render json: {id: user.id, name: user.name, email: user.email, admin: user.admin, token: issue_token({id: user.id})}
         else
           render json: {errors: 'Invalid email/password combination.'}, status: 400
         end
@@ -21,7 +22,7 @@ class UsersController < ApplicationController
       def validate
         user = get_current_user
         if user
-          render json: {id: user.id, name: user.name, email: user.email, token: issue_token({id: user.id})}
+          render json: {id: user.id, name: user.name, email: user.email, admin: user.admin, token: issue_token({id: user.id})}
         else
           render json: {errors: 'User not found.'}, status: 400
         end
@@ -47,7 +48,6 @@ class UsersController < ApplicationController
             render json: @user
         else
             render json: {errors: @user.errors.full_messages}
-            # 'This email already used for an other account'}
         end
     end
 
@@ -57,10 +57,10 @@ class UsersController < ApplicationController
 
     def update
         render json: @user
-        if @user.valide?
+        if @user.valid?
             render json: @user
         else
-            render json: {errors: 'Error'}
+            render json: {errors: @user.errors.full_messages}
         end
     end
 

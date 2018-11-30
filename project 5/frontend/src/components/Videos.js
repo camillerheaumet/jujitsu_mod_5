@@ -1,33 +1,77 @@
 import React from 'react'
+import ModifyVideoForm from './ModifyVideoForm'
+import API from '../API'
+import { confirmAlert } from 'react-confirm-alert'
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 class Videos extends React.Component {
-    state = { expanded: false }
+    state = { 
+        expanded: false,
+        modifyForm: false
+    }
   
     handleExpandClick = () => {
-      this.setState(state => ({ expanded: !state.expanded }))
+      this.setState({ expanded: !this.state.expanded })
+    }
+
+    handleModifyFormClick = () => {
+        this.setState({ modifyForm: !this.state.modifyForm })
+    }
+
+    confirmDeleteVideo = () => {
+        confirmAlert({
+          title: 'Delete alert',
+          message: 'Are you sure you want to delete this video?',
+          buttons: [
+            {
+              label: 'Absolutly',
+              onClick: () => API.deleteVideo(this.props.video.id).then(this.confirmDeleted())
+            },
+            {label: 'Nooooo!!!'}
+          ]
+        })
+    }
+
+    confirmDeleted = () => {
+        confirmAlert({
+          title: 'Delete alert',
+          message: 'This video has been deleted.',
+          buttons: [{label: 'OK',
+          onClick: () => window.location.reload()}]
+        })
     }
 
     render () {
-        const { video, addToPurchase, removefromPurchase, currentUserVideos, currentPurchase } = this.props
-  
+        const { video, currentUser, addToPurchase, removefromPurchase, currentUserVideos, currentPurchase } = this.props
+        const { expanded, modifyForm } = this.state
         return (
             <div>
-                <h3>{video.name}</h3>
-                <img src={video.image_url} alt={`${video.name}`}/>
-                <h4>£ {video.price}</h4>
-                { currentUserVideos.find(v => v.id === video.id) ?
-                    <p>You already purchased this video, you can download it via My Videos.</p> :
-                    !currentPurchase.includes(video) ?
-                    <button onClick={() => addToPurchase(video)}>Add to basket</button>:
-                    <button onClick={() => removefromPurchase(video)}>Remove from basket</button>}
-                <button onClick={() => this.handleExpandClick()}>{
-                    this.state.expanded ?
-                    'Hide description': 'Reveal description'}</button>
-                {this.state.expanded ?
-                <div><h4>Description:</h4>
-                <p>{video.description}</p></div> : null}
+                {modifyForm ?
+                <div><ModifyVideoForm video={video}/></div>:
+                <div>
+                    <h3>{video.name}</h3>
+                    <img src={video.image_url} alt={`${video.name}`}/>
+                    <h4>£ {video.price}</h4>
+                    { currentUserVideos.find(v => v.id === video.id) ?
+                        <p>You already purchased this video, you can download it via My Videos.</p> :
+                        !currentPurchase.includes(video) ?
+                        <button onClick={() => addToPurchase(video)}>Add to basket</button>:
+                        <button onClick={() => removefromPurchase(video)}>Remove from basket</button>}
+                    <button onClick={() => this.handleExpandClick()}>{
+                        expanded ?
+                        'Hide description': 'Reveal description'}</button>
+                    {expanded ?
+                    <div><h4>Description:</h4>
+                    <p>{video.description !== ''?
+                        video.description:
+                        "There is no description."}</p></div> : null}
+                </div>}
+                {currentUser.admin ?
+                    <div><button onClick={() => this.handleModifyFormClick()}>{modifyForm ? "Cancel" : "Edit"}</button>
+                    <button onClick={() => this.confirmDeleteVideo()}>Delete video</button></div> : null}
+                
             </div>
-      )
+        )
     }
 }
 

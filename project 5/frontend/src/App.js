@@ -6,7 +6,10 @@ import AuthorisationContainer from './containers/AuthorisationContainer'
 import MyVideosContainer from './containers/MyVideosContainer'
 import VideosContainer from './containers/VideosContainer'
 import Basket from './components/Basket'
-import './App.css';
+import { confirmAlert } from 'react-confirm-alert'
+import 'react-confirm-alert/src/react-confirm-alert.css'
+
+import './App.css'
 
 class App extends React.Component {
 
@@ -14,7 +17,8 @@ class App extends React.Component {
     currentUser: {
       id: null,
       name: null,
-      email: null
+      email: null,
+      admin: null
     },
     currentPurchase: [],
     currentUserVideos: []
@@ -25,7 +29,8 @@ class App extends React.Component {
     this.setState({ currentUser: {
       id: user.id,
       name: user.name,
-      email: user.email}},() =>{
+      email: user.email,
+      admin: user.admin}},() =>{
         this.getUserVideo()
         this.props.history.push('/home')
       })
@@ -36,7 +41,8 @@ class App extends React.Component {
     this.setState({ currentUser: {
       id: null,
       name: null,
-     email: null },
+     email: null,
+     admin: null },
      currentPurchase: [],
      currentUserVideos: []})
     this.props.history.push('/signin')
@@ -73,21 +79,29 @@ class App extends React.Component {
     API.getUserVideos()
       .then(data => {
         if (data.error) {
-          alert('You are not signed in')
+          this.alertFunc('You are not signed in')
         } else {
           this.setState({ currentUserVideos: data })
         }
       })
   }
 
+  alertFunc = (string) => {
+    confirmAlert({
+      title: 'Alert',
+      message: string,
+      buttons: [{label: 'OK'}]
+    })
+  }
+
   render() {
     const { currentUser, currentPurchase, currentUserVideos } = this.state
-    const { signin, signout, addToPurchase, removefromPurchase, handleDeleteAllButton } = this
+    const { signin, signout, addToPurchase, removefromPurchase, handleDeleteAllButton, alertFunc } = this
     return (
       <div className="App">
         <Route path='/' render={() => <Navbar currentUser={currentUser} currentPurchase={currentPurchase} signout={signout} /> } />
         <Route exact path='/my_videos' render={props => <MyVideosContainer {...props} currentUser={currentUser} currentUserVideos={currentUserVideos}/>} />
-        <Route path='/signin' render={props => <AuthorisationContainer {...props} signin={signin} />} />
+        <Route path='/signin' render={props => <AuthorisationContainer {...props} signin={signin} alertFunc={alertFunc} />} />
         <Route exact path='/home' render={props => <VideosContainer {...props} currentUser={currentUser} currentPurchase={currentPurchase} 
           addToPurchase={addToPurchase} removefromPurchase={removefromPurchase} currentUserVideos={currentUserVideos}/>} />
         <Route exact path='/basket' render={props => <Basket {...props} currentUser={currentUser} 

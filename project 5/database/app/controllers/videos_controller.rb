@@ -1,5 +1,5 @@
 class VideosController < ApplicationController
-    before_action :set_video, only: [:show, :edit, :update] # :destroy peut etre plus tard
+    before_action :set_video, only: [:show, :edit, :update, :destroy]
 
     def index
         @videos = Video.all
@@ -7,6 +7,7 @@ class VideosController < ApplicationController
     end
 
     def show
+        render json: @video
     end
 
     def new
@@ -19,22 +20,27 @@ class VideosController < ApplicationController
         if @video.save
         render json: @video
         else
-        render json: {error: 'This video is not valid'}
+        render json: {error: @video.errors.full_messages}
         end
     end
 
     def edit
+        render json: @video
     end
 
     def update
-        # quelquechoses
+        @video.update(video_params)
+        if @video.valid?
+            render json: @video
+        else
+            render json: {errors: @video.errors.full_messages}
+        end
     end
 
-    #   def destroy
-    #     @video.destroy
-    #     render json: {message:'Store deleted successfully'}
-    #     # on verra plus tard si ca me tente de permettre de supprimer son account
-    #   end
+    def destroy
+        @video.destroy
+        render json: {message:'Video deleted successfully'}
+    end
 
     private
     def video_params
@@ -42,6 +48,6 @@ class VideosController < ApplicationController
     end
 
     def set_video
-        @video = video.find(params[:id])
+        @video = Video.find(params[:id])
     end
 end
