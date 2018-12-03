@@ -18,6 +18,6 @@ class ApplicationController < ActionController::API
     end
     
     def secret
-        "cam"
+       'cam'
     end
 end

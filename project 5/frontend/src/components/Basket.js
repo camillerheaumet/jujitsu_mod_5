@@ -1,5 +1,7 @@
 import React from 'react'
 import API from '../API'
+import {Elements, StripeProvider} from 'react-stripe-elements';
+import CheckoutForm from './CheckoutForm';
 
 class Basket extends React.Component {
     countTotalCost () {
@@ -26,6 +28,8 @@ class Basket extends React.Component {
         const { currentPurchase, handleDeleteAllButton, removefromPurchase } = this.props
         return (
             <div>
+            {true ?
+            <div>
                 <h1>Basket</h1>
                 {!localStorage.getItem('token') ?
                 <p>You need to be sign in to purchase</p>:
@@ -35,6 +39,18 @@ class Basket extends React.Component {
                 <button onClick={() => handleDeleteAllButton()}>Remove all</button>
                 <button onClick={(event) => this.createPurchasedVideos(event)}>Proceed to payment</button>
                 </div>}
+            </div>:
+            <div>
+                <StripeProvider apiKey="pk_test_mettre les truc">
+                    <div className="example">
+                        <h1>React Stripe Elements Example</h1>
+                        <Elements>
+                            <CheckoutForm />
+                        </Elements>
+                    </div>
+                </StripeProvider>
+
+            </div>}
             </div>
         )
     }

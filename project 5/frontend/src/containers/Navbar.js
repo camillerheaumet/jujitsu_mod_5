@@ -7,7 +7,7 @@ const Navbar = props =>
     <h1 className='App-title'>
       {localStorage.getItem('token') ?
           `Welcome back, ${props.currentUser.name}!` :
-          'Welcome to Ju jitsu payment system.'}
+          'Welcome to London Ju Jitsu Shop.'}
     </h1>
     {props.currentUser.admin ?
     <h2>YOU ARE AN ADMIN USER</h2>: null}

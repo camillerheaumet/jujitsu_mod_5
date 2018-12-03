@@ -17,9 +17,8 @@ class API {
   }
 
   static validate () {
-    const token = localStorage.getItem('token')
     return fetch(`${this.baseURL}/validate`, {
-      headers: {'Authorization': token}
+      headers: {'Authorization': localStorage.token}
     }).then(resp => resp.json())
   }
 
@@ -35,6 +34,17 @@ class API {
         headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({user: newUser})
       }).then(resp => resp.json())
+  }
+
+  static updateUser (id, modifUser) {
+    return fetch(`${this.usersURL}/${id}`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': localStorage.token
+      },
+      body: JSON.stringify({user: modifUser})
+    }).then(resp => resp.json())
   }
 
   static getAllVideos () {
@@ -73,7 +83,7 @@ class API {
   static deleteVideo (id) {
     return fetch(`${this.videosURL}/${id}`, {
       method: 'DELETE'})
-    }
+  }
 }
 
 API.init()

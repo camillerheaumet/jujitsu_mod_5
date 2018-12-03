@@ -4,6 +4,7 @@ import API from './API'
 import Navbar from './containers/Navbar'
 import AuthorisationContainer from './containers/AuthorisationContainer'
 import MyVideosContainer from './containers/MyVideosContainer'
+import MyAccountContainer from './containers/MyAccountContainer'
 import VideosContainer from './containers/VideosContainer'
 import Basket from './components/Basket'
 import { confirmAlert } from 'react-confirm-alert'
@@ -49,13 +50,16 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (!localStorage.getItem('token')) return
+    if (localStorage.getItem('token') === null) return
     API.validate()
       .then(user => {
         this.signin(user);
         
       })
-      .catch(error => this.props.history.push('/signin'))
+      .catch(error => {
+        this.alertFunc(error);
+         this.props.history.push('/signin')
+    })
   }
 
   addToPurchase = (newVideo) => {
@@ -101,7 +105,8 @@ class App extends React.Component {
       <div className="App">
         <Route path='/' render={() => <Navbar currentUser={currentUser} currentPurchase={currentPurchase} signout={signout} /> } />
         <Route exact path='/my_videos' render={props => <MyVideosContainer {...props} currentUser={currentUser} currentUserVideos={currentUserVideos}/>} />
-        <Route path='/signin' render={props => <AuthorisationContainer {...props} signin={signin} alertFunc={alertFunc} />} />
+        <Route exact path='/my_account' render={props => <MyAccountContainer {...props} currentUser={currentUser} alertFunc={alertFunc}/>} />
+        <Route exact path='/signin' render={props => <AuthorisationContainer {...props} signin={signin} alertFunc={alertFunc} />} />
         <Route exact path='/home' render={props => <VideosContainer {...props} currentUser={currentUser} currentPurchase={currentPurchase} 
           addToPurchase={addToPurchase} removefromPurchase={removefromPurchase} currentUserVideos={currentUserVideos}/>} />
         <Route exact path='/basket' render={props => <Basket {...props} currentUser={currentUser} 

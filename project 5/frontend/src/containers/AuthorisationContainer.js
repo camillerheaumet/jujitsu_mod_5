@@ -6,12 +6,6 @@ import SignUpForm from '../components/SignUpForm'
 import API from '../API'
 
 class AuthorisationContainer extends React.Component {
-  state = {
-    email: '',
-    password: ''
-  }
-
-
   signUpNewUser = event => {
     event.preventDefault()
     const newUser = {
@@ -33,17 +27,14 @@ class AuthorisationContainer extends React.Component {
 
   signInExistingUser = event => {
     event.preventDefault()
-    this.setState({email: event.target.email.value, password: event.target.psw.value}, () => {
-      API.login(this.state.email, this.state.password)
-      .then(data => {
-        if (data.error) {
-          this.props.alertFunc('Wrong combination email/password')
-        } else {
-          this.props.signin(data)
-        }
-      })
+    API.login(event.target.email.value, event.target.psw.value)
+    .then(data => {
+      if (data.error) {
+        this.props.alertFunc('Wrong combination email/password')
+      } else {
+        this.props.signin(data)
+      }
     })
-    
   }
 
   render () {

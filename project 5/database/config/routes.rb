@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
   resources :users
-  resources :purchases
+  resources :purchases do 
+    resources :payments, only: [:new, :create]
+  end
   resources :videos
 
    post 'signin', to: 'users#sign_in'

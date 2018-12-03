@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :set_user, only: [:show, :edit, :update] # :destroy peut etre plus tard
+    before_action :set_user, only: [:show, :edit, :update, :destroy]
 
     def index
         @users = User.all
@@ -12,10 +12,11 @@ class UsersController < ApplicationController
 
     def sign_in
         user = User.find_by(email: params[:email])
+
         if user && user.authenticate(params[:password])
           render json: {id: user.id, name: user.name, email: user.email, admin: user.admin, token: issue_token({id: user.id})}
         else
-          render json: {errors: 'Invalid email/password combination.'}, status: 400
+          render json: {errors: 'Invalid email/password combination.'}
         end
       end
     
@@ -56,7 +57,7 @@ class UsersController < ApplicationController
     end
 
     def update
-        render json: @user
+        @user.update(user_params)
         if @user.valid?
             render json: @user
         else
@@ -64,11 +65,10 @@ class UsersController < ApplicationController
         end
     end
 
-    #   def destroy
-    #     @user.destroy
-    #     render json: {message:'Store deleted successfully'}
-    #     # on verra plus tard si ca me tente de permettre de supprimer son account
-    #   end
+    def destroy
+        @user.destroy
+        render json: {message:'Your account has been deleted successfully'}
+    end
 
     private
     def user_params
