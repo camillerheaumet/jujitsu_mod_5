@@ -18,7 +18,6 @@ class EditAccountForm extends React.Component {
     }
 
     validatePassword = (event, variable) => {
-        event.preventDefault()
         if (event.target.psw.value !== event.target.pswconf.value) {
             this.alertFuncPassword('Password is different than the confirm password. Please re-enter them.', event)
         } else if (event.target.psw.value.toLowerCase() === event.target.name.value.toLowerCase()){
@@ -26,7 +25,7 @@ class EditAccountForm extends React.Component {
         } else if (event.target.psw.value.length < 6) {
             this.alertFuncPassword('Your password need to be 6 characters or plus.', event)
         } else {
-            return variable = {...variable, password: event.target.psw.value}
+            return {...variable, password: event.target.psw.value}
         }
     }
 

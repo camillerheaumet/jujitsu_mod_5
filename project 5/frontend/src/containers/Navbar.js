@@ -12,10 +12,10 @@ const Navbar = props =>
     {props.currentUser.admin ?
     <h2>YOU ARE AN ADMIN USER</h2>: null}
     <ul className='nav_list'>
-        <ol className='nav_list_item'><Link exact to='/home'>Home</Link></ol>
-        <ol className='nav_list_item'><Link exact to='/my_account'>My account</Link></ol>
-        <ol className='nav_list_item'><Link exact to='/my_videos'>My Videos</Link></ol>
-        <ol className='nav_list_item'><Link exact to='/basket'>Basket  ({props.currentPurchase.length})</Link></ol>
+        <ol className='nav_list_item'><Link exact='true' to='/home'>Home</Link></ol>
+        <ol className='nav_list_item'><Link exact='true' to='/my_account'>My account</Link></ol>
+        <ol className='nav_list_item'><Link exact='true' to='/my_videos'>My Videos</Link></ol>
+        <ol className='nav_list_item'><Link exact='true' to='/basket'>Basket  ({props.currentPurchase.length})</Link></ol>
       <button>{!!localStorage.getItem('token') ?
         <Link to='/' onClick={props.signout}>SIGN OUT</Link>:
         <Link to='/signin' >SIGN IN or SIGN UP</Link>}

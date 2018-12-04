@@ -29,8 +29,8 @@ class AuthorisationContainer extends React.Component {
     event.preventDefault()
     API.login(event.target.email.value, event.target.psw.value)
     .then(data => {
-      if (data.error) {
-        this.props.alertFunc('Wrong combination email/password')
+      if (data.errors) {
+        this.props.alertFunc(data.errors)
       } else {
         this.props.signin(data)
       }

@@ -45,7 +45,8 @@ class App extends React.Component {
      email: null,
      admin: null },
      currentPurchase: [],
-     currentUserVideos: []})
+     currentUserVideos: [],
+     })
     this.props.history.push('/signin')
   }
 
@@ -62,8 +63,20 @@ class App extends React.Component {
     })
   }
 
+  filteredPurchase = (purchasedVideos, basket) => {
+    let filteredVideos = []
+    for (let x of basket) {
+      if (purchasedVideos.filter(y => y.id == x.id).length > 0){
+      }
+      else {
+        filteredVideos.push(x)
+      }
+    }
+    this.setState({currentPurchase: filteredVideos})
+  }
+
   addToPurchase = (newVideo) => {
-    if (this.state.currentPurchase.includes(newVideo)){
+    if (this.state.currentPurchase.includes(newVideo) && !this.currentUserVideos.includes(newVideo)){
     }else {
       this.setState({currentPurchase: [...this.state.currentPurchase, newVideo]})
     }
@@ -85,7 +98,7 @@ class App extends React.Component {
         if (data.error) {
           this.alertFunc('You are not signed in')
         } else {
-          this.setState({ currentUserVideos: data })
+          this.setState({ currentUserVideos: data }, () => this.filteredPurchase(data, this.state.currentPurchase))
         }
       })
   }
@@ -109,7 +122,7 @@ class App extends React.Component {
         <Route exact path='/signin' render={props => <AuthorisationContainer {...props} signin={signin} alertFunc={alertFunc} />} />
         <Route exact path='/home' render={props => <VideosContainer {...props} currentUser={currentUser} currentPurchase={currentPurchase} 
           addToPurchase={addToPurchase} removefromPurchase={removefromPurchase} currentUserVideos={currentUserVideos}/>} />
-        <Route exact path='/basket' render={props => <Basket {...props} currentUser={currentUser} 
+        <Route exact path='/basket' render={props => <Basket {...props} currentUser={currentUser} currentUserVideos={currentUserVideos} 
           currentPurchase={currentPurchase} removefromPurchase={removefromPurchase} handleDeleteAllButton={handleDeleteAllButton}/>} />
       </div>
     )

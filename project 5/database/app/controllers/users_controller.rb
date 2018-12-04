@@ -12,11 +12,11 @@ class UsersController < ApplicationController
 
     def sign_in
         user = User.find_by(email: params[:email])
-
+        
         if user && user.authenticate(params[:password])
           render json: {id: user.id, name: user.name, email: user.email, admin: user.admin, token: issue_token({id: user.id})}
         else
-          render json: {errors: 'Invalid email/password combination.'}
+          render json: {errors: 'Invalid email and/or password combination.'}
         end
       end
     
