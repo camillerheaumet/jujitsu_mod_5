@@ -22,7 +22,8 @@ class App extends React.Component {
       admin: null
     },
     currentPurchase: [],
-    currentUserVideos: []
+    currentUserVideos: [],
+    allVideos: []
   }
 
   signin = (user) => {
@@ -51,22 +52,24 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    if (localStorage.getItem('token') === null) return
+    this.getAllVideo()
+    if (!localStorage.getItem('token') === null) {
+    console.log("hello word")} else {
     API.validate()
       .then(user => {
         this.signin(user);
         
       })
-      .catch(error => {
-        this.alertFunc(error);
+      .catch(errors => {
+        this.alertFunc(errors);
          this.props.history.push('/signin')
-    })
+    })}
   }
 
   filteredPurchase = (purchasedVideos, basket) => {
     let filteredVideos = []
     for (let x of basket) {
-      if (purchasedVideos.filter(y => y.id == x.id).length > 0){
+      if (purchasedVideos.filter(y => y.id === x.id).length > 0){
       }
       else {
         filteredVideos.push(x)
@@ -95,11 +98,10 @@ class App extends React.Component {
   getUserVideo() {
     API.getUserVideos()
       .then(data => {
-        if (data.error) {
-          this.alertFunc('You are not signed in')
-        } else {
+        if (data.length > 0) {
           this.setState({ currentUserVideos: data }, () => this.filteredPurchase(data, this.state.currentPurchase))
-        }
+        } else if (data.errors) {
+          this.alertFunc('You are not signed in')}
       })
   }
 
@@ -111,16 +113,27 @@ class App extends React.Component {
     })
   }
 
+  getAllVideo() {
+    API.getAllVideos()
+      .then(data => {
+        if (data.errors) {
+          alert('You are not signed in')
+        } else {
+          this.setState({ allVideos: data })
+        }
+    })
+  }
+
   render() {
-    const { currentUser, currentPurchase, currentUserVideos } = this.state
+    const { currentUser, currentPurchase, currentUserVideos, allVideos } = this.state
     const { signin, signout, addToPurchase, removefromPurchase, handleDeleteAllButton, alertFunc } = this
     return (
       <div className="App">
         <Route path='/' render={() => <Navbar currentUser={currentUser} currentPurchase={currentPurchase} signout={signout} /> } />
-        <Route exact path='/my_videos' render={props => <MyVideosContainer {...props} currentUser={currentUser} currentUserVideos={currentUserVideos}/>} />
+        <Route exact path='/my_videos' render={props => <MyVideosContainer {...props} currentUser={currentUser} currentUserVideos={currentUserVideos} allVideos={allVideos}/>} />
         <Route exact path='/my_account' render={props => <MyAccountContainer {...props} currentUser={currentUser} alertFunc={alertFunc}/>} />
         <Route exact path='/signin' render={props => <AuthorisationContainer {...props} signin={signin} alertFunc={alertFunc} />} />
-        <Route exact path='/home' render={props => <VideosContainer {...props} currentUser={currentUser} currentPurchase={currentPurchase} 
+        <Route exact path='/home' render={props => <VideosContainer {...props} currentUser={currentUser} currentPurchase={currentPurchase} allVideos={allVideos} 
           addToPurchase={addToPurchase} removefromPurchase={removefromPurchase} currentUserVideos={currentUserVideos}/>} />
         <Route exact path='/basket' render={props => <Basket {...props} currentUser={currentUser} currentUserVideos={currentUserVideos} 
           currentPurchase={currentPurchase} removefromPurchase={removefromPurchase} handleDeleteAllButton={handleDeleteAllButton}/>} />

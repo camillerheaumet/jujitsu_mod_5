@@ -11,7 +11,7 @@ class PaymentsController < ApplicationController
 
     private
 
-    def set_order
-        @order = current_user.purchases.find(params[:purchases_id])
+    def set_purchase
+        @purchase = current_user.purchases.find(params[:purchases_id])
     end
 end

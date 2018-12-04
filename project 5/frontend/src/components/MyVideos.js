@@ -14,8 +14,7 @@ class MyVideos extends React.Component {
         <div>
           <h3>{myVideo.name}</h3>
           <img src={myVideo.image_url} alt={`${myVideo.name}`}/>
-          <h4>£ {myVideo.price}</h4>
-          <button >Download</button>
+          <button onClick={()=> window.open(myVideo.download_url, "_blank")}>Download</button>
           <button onClick={() => this.handleExpandClick()}>{
             this.state.expanded ?
             'Hide description': 'Reveal description'}

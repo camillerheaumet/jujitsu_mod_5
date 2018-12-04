@@ -52,11 +52,14 @@ class Videos extends React.Component {
                     <h3>{video.name}</h3>
                     <img src={video.image_url} alt={`${video.name}`}/>
                     <h4>£ {video.price}</h4>
+                    {!currentUser.admin ?
+                    <div>
                     { currentUserVideos.find(v => v.id === video.id) ?
                         <p>You already purchased this video, you can download it via My Videos.</p> :
                         !currentPurchase.includes(video) ?
                         <button onClick={() => addToPurchase(video)}>Add to basket</button>:
                         <button onClick={() => removefromPurchase(video)}>Remove from basket</button>}
+                        </div> : null}
                     <button onClick={() => this.handleExpandClick()}>{
                         expanded ?
                         'Hide description': 'Reveal description'}</button>

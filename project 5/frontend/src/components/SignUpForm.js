@@ -37,7 +37,7 @@ class SignUpForm extends React.Component {
 
           <button type='submit'>Sign Up</button>
       </form>
-      <p>{this.props.error}</p>
+      <p>{this.props.errors}</p>
     </div>
     )
     }

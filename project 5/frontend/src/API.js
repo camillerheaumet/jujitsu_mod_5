@@ -47,6 +47,12 @@ class API {
     }).then(resp => resp.json())
   }
 
+  // je sais pas si je veux que ca soit possible
+  // static deleteUser (id) {
+  //   return fetch(`${this.usersURL}/${id}`, {
+  //     method: 'DELETE'})
+  // }
+
   static getAllVideos () {
       return fetch(`${this.videosURL}`, {
       }).then(resp => resp.json())

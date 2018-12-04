@@ -6,6 +6,29 @@ class PurchasesController < ApplicationController
         render json: @purchases
     end
 
+    def checkout
+        puts params
+        customer = Stripe::Customer.create(
+            source: params[:stripeToken],
+            email:  params[:stripeEmail]
+        )
+        
+        charge = Stripe::Charge.create(
+            :customer    => customer.id,   # You should store this customer id and re-use it.
+            :amount      =>  params[:total],
+            :description    =>  "Payment for purchase",
+            :currency    => "gbp"
+        )
+
+    
+        
+        # @purchase.update(payment: charge.to_json, state: 'paid')
+        render json: {errors: "wait what?"}
+
+    rescue Stripe::CardError, Stripe::InvalidRequestError => e
+        render json: {errors: error.message}
+    end
+
     def show
     end
 
@@ -27,7 +50,9 @@ class PurchasesController < ApplicationController
 
     def user_purchases
         user = get_current_user
+        if user.videos
         render json: user.videos
+        end
     end
 
     private

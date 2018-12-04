@@ -9,11 +9,16 @@ class CheckoutForm extends React.Component {
   }
 
   async submit(ev) {
+    console.log(this.props.stripe)
     let {token} = await this.props.stripe.createToken({name: "Name"});
-    let response = await fetch("/charge", {
+    console.log(token)
+    let response = await fetch("http://localhost:3001/purchases/11/checkout", {
       method: "POST",
       headers: {"Content-Type": "text/plain"},
-      body: token.id
+      body:  JSON.stringify({
+        id: token.id,
+        total: this.props.total
+      })
     });
   
     if (response.ok) this.setState({complete: true});

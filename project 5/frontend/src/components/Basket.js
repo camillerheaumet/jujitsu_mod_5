@@ -1,13 +1,17 @@
 import React from 'react'
 import API from '../API'
-// import {Elements, StripeProvider} from 'react-stripe-elements';
-// import CheckoutForm from './CheckoutForm';
+import {Elements, StripeProvider} from 'react-stripe-elements';
+import CheckoutForm from './CheckoutForm';
 
 class Basket extends React.Component {
     countTotalCost () {
         let totalCost = 0
         this.props.currentPurchase.map(purchaseVideo => totalCost += purchaseVideo.price)
-        return totalCost
+        return totalCost.toFixed(2)
+    }
+
+    toRubyCurrency (amount) {
+        return (amount * 100)
     }
 
     createPurchasedVideos = (event) => {
@@ -23,7 +27,7 @@ class Basket extends React.Component {
             alert('Your basket is empty')
         }
     }
-    
+
     render() {
         const { currentPurchase, handleDeleteAllButton, removefromPurchase } = this.props
 
@@ -32,30 +36,30 @@ class Basket extends React.Component {
             // {true ?
             <div>
                 <h1>Basket</h1>
+                {currentPurchase.map(purchaseVideo => <p key={purchaseVideo.id}>{purchaseVideo.name} {purchaseVideo.price} <button onClick={() => removefromPurchase(purchaseVideo)}>remove</button></p>)}
+                <p>Total {this.countTotalCost()}</p>
+                <button onClick={() => handleDeleteAllButton()}>Remove all</button>
                 {!localStorage.getItem('token') ?
                 <p>You need to be sign in to purchase</p>:
                 <div>
                     {currentPurchase.length > 0 ?
-                    <div>  
-                    {currentPurchase.map(purchaseVideo => <p key={purchaseVideo.id}>{purchaseVideo.name} {purchaseVideo.price} <button onClick={() => removefromPurchase(purchaseVideo)}>remove</button></p>)}
-                    <p>Total {this.countTotalCost()}</p>
-                    <button onClick={() => handleDeleteAllButton()}>Remove all</button>
+                    <div>
                     <button onClick={(event) => this.createPurchasedVideos(event)}>Proceed to payment</button>
                     </div>:
                     <p>Your basket is empty.</p>}
                 </div>}
-            {/* // :
-            // <div>
-            //     <StripeProvider apiKey="pk_test_mettre les truc">
-            //         <div className="example">
-            //             <h1>React Stripe Elements Example</h1>
-            //             <Elements>
-            //                 <CheckoutForm />
-            //             </Elements>
-            //         </div>
-            //     </StripeProvider>
+             
+             <div>
+                 <StripeProvider apiKey="">
+                     <div className="example">
+                         <h1>React Stripe Elements Example</h1>
+                         <Elements>
+                             <CheckoutForm total={this.countTotalCost() * 100}/>
+                         </Elements>
+                     </div>
+                 </StripeProvider>
 
-            // </div>} */}
+             </div>
             </div>
         )
     }
