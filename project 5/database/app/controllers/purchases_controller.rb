@@ -7,27 +7,34 @@ class PurchasesController < ApplicationController
     end
 
     def checkout
-        puts params
+        puts payment_params
+        @purchase = Purchase.find(payment_params[:purchase_id])
         customer = Stripe::Customer.create(
-            source: params[:stripeToken],
-            email:  params[:stripeEmail]
+            source: payment_params[:stripeToken],
+            email:  payment_params[:stripeEmail]
         )
         
         charge = Stripe::Charge.create(
             :customer    => customer.id,   # You should store this customer id and re-use it.
-            :amount      =>  params[:total],
+            :amount      =>  payment_params[:total],
             :description    =>  "Payment for purchase",
             :currency    => "gbp"
         )
 
+        @purchase.update(paid: true)
+        render json: {errors: "wait what?"}
+    
+        rescue Stripe::CardError => e
+          error = e.message
+          render json: {errors: error}
+        end
     
         
-        # @purchase.update(payment: charge.to_json, state: 'paid')
-        # render json: {errors: "wait what?"}
+        
 
-    rescue Stripe::CardError, Stripe::InvalidRequestError => e
-        render json: {errors: e.error.message}
-    end
+    # rescue Stripe::CardError, Stripe::InvalidRequestError => e
+    #     
+    # end
 
     def show
     end
@@ -51,13 +58,22 @@ class PurchasesController < ApplicationController
     def user_purchases
         user = get_current_user
         if user.videos
-        render json: user.videos
+            user_purchases = user.purchases
+            paid_videos = user_purchases.select { |pur|pur.paid}
+            user_videos = paid_videos.map{|p|p.video}
+            if user_videos
+                render json: user_videos
+            end
         end
     end
 
     private
     def purchase_params
-        params.require(:purchase).permit(:user_id, :video_id)
+        params.require(:purchase).permit(:user_id, :video_id, :paid)
+    end
+
+    def payment_params
+        params.require(:purchase).permit(:id, :total, :stripeToken, :stripeEmail, :purchase_id)
     end
 
     def set_purchase

@@ -12,11 +12,13 @@ class CheckoutForm extends React.Component {
     console.log(this.props.stripe)
     let {token} = await this.props.stripe.createToken({name: "Name"});
     console.log(token)
-    let response = await fetch("http://localhost:3001/purchases/11/checkout", {
+    let response = await fetch(`http://localhost:3001/purchases/${this.props.lastPurchaseId}/checkout`, {
       method: "POST",
-      headers: {"Content-Type": "text/plain"},
+      headers: {"Content-Type": "application/json"},
       body:  JSON.stringify({
-        id: token.id,
+        purchase_id: this.props.lastPurchaseId,
+        stripeToken: token.id,
+        stripeEmail: this.props.userEmail,
         total: this.props.total
       })
     });

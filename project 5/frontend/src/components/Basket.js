@@ -4,6 +4,11 @@ import {Elements, StripeProvider} from 'react-stripe-elements';
 import CheckoutForm from './CheckoutForm';
 
 class Basket extends React.Component {
+    state = {
+        proceedPayment: false,
+        lastPurchaseId: 0
+    }
+
     countTotalCost () {
         let totalCost = 0
         this.props.currentPurchase.map(purchaseVideo => totalCost += purchaseVideo.price)
@@ -22,18 +27,41 @@ class Basket extends React.Component {
                 user_id: this.props.currentUser.id,
                 video_ids: videoIds
             };
-            API.createPurchase(newPur).then(window.location.reload())
+            API.createPurchase(newPur).then(resp =>
+                this.setState({
+                    proceedPayment: true,
+                    lastPurchaseId: resp.id
+                    // .then(window.location.reload())
+                })
+            )
         } else {
             alert('Your basket is empty')
         }
     }
 
+    handleClick = () => {
+        this.setState({ 
+            proceedPayment: false            
+        })
+    }
+
     render() {
-        const { currentPurchase, handleDeleteAllButton, removefromPurchase } = this.props
+        const { currentUser, currentPurchase, handleDeleteAllButton, removefromPurchase } = this.props
 
         return (
-            // <div>
-            // {true ?
+            <div>
+            {this.state.proceedPayment ?
+            <div>
+                <StripeProvider apiKey="">
+                    <div className="example">
+                        <h1>Proceed to Payment</h1>
+                        <Elements>
+                            <CheckoutForm total={this.countTotalCost() * 100} userEmail={currentUser.email} lastPurchaseId={this.state.lastPurchaseId}/>
+                        </Elements>
+                        <button onClick={() => this.handleClick()}>Cancel</button>
+                    </div>
+                </StripeProvider>
+            </div>:
             <div>
                 <h1>Basket</h1>
                 {currentPurchase.map(purchaseVideo => <p key={purchaseVideo.id}>{purchaseVideo.name} {purchaseVideo.price} <button onClick={() => removefromPurchase(purchaseVideo)}>remove</button></p>)}
@@ -48,18 +76,7 @@ class Basket extends React.Component {
                     </div>:
                     <p>Your basket is empty.</p>}
                 </div>}
-             
-             <div>
-                 <StripeProvider apiKey="">
-                     <div className="example">
-                         <h1>React Stripe Elements Example</h1>
-                         <Elements>
-                             <CheckoutForm total={this.countTotalCost() * 100}/>
-                         </Elements>
-                     </div>
-                 </StripeProvider>
-
-             </div>
+                </div>}
             </div>
         )
     }

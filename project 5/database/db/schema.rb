@@ -15,6 +15,7 @@ ActiveRecord::Schema.define(version: 2018_11_21_141139) do
   create_table "purchases", force: :cascade do |t|
     t.integer "user_id"
     t.integer "video_id"
+    t.boolean "paid", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
