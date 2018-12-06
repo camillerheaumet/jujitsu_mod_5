@@ -1,4 +1,5 @@
 import React from 'react'
+import noImageIcon from '../noImageIcon.png'
 
 class MyVideos extends React.Component {
     state = { expanded: false }
@@ -6,6 +7,14 @@ class MyVideos extends React.Component {
     handleExpandClick = () => {
       this.setState(state => ({ expanded: !state.expanded }))
     };
+
+    getVideosImage = () => {
+      if (this.props.myVideo.image_url === '') {
+         return <img src={noImageIcon} alt={"default"}/>
+      } else {
+         return <img src={this.props.myVideo.image_url} alt={`${this.props.myVideo.name}`}/>
+      }
+    }
   
     render () {
       const { myVideo } = this.props
@@ -13,7 +22,7 @@ class MyVideos extends React.Component {
       return (
         <div>
           <h3>{myVideo.name}</h3>
-          <img src={myVideo.image_url} alt={`${myVideo.name}`}/>
+          <p>{this.getVideosImage()}</p>
           <button onClick={()=> window.open(myVideo.download_url, "_blank")}>Download</button>
           <button onClick={() => this.handleExpandClick()}>{
             this.state.expanded ?

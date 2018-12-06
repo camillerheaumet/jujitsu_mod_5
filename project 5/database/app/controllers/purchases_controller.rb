@@ -23,10 +23,10 @@ class PurchasesController < ApplicationController
     
         
         # @purchase.update(payment: charge.to_json, state: 'paid')
-        render json: {errors: "wait what?"}
+        # render json: {errors: "wait what?"}
 
     rescue Stripe::CardError, Stripe::InvalidRequestError => e
-        render json: {errors: error.message}
+        render json: {errors: e.error.message}
     end
 
     def show

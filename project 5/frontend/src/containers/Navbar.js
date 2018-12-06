@@ -1,9 +1,11 @@
 import React from 'react'
+import logo from '../logo.png'
 
 import { Link } from 'react-router-dom'
 
 const Navbar = props =>
   <header className='App-header'>
+  <img src={logo} alt={'logo'} />
     <h1 className='App-title'>
       {localStorage.getItem('token') ?
           `Welcome back, ${props.currentUser.name}!` :

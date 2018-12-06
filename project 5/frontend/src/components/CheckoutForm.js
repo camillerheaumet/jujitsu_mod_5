@@ -21,7 +21,11 @@ class CheckoutForm extends React.Component {
       })
     });
   
-    if (response.ok) this.setState({complete: true});
+    if (response.ok){
+      this.setState({complete: true})
+    } else {
+      alert(response.errors)
+    }
   }
 
   render() {

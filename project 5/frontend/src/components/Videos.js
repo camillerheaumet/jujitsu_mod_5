@@ -1,6 +1,8 @@
 import React from 'react'
 import ModifyVideoForm from './ModifyVideoForm'
 import API from '../API'
+import noImageIcon from '../noImageIcon.png'
+
 import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 
@@ -41,6 +43,14 @@ class Videos extends React.Component {
         })
     }
 
+    getVideosImage = () => {
+        if (this.props.video.image_url === '') {
+           return <img src={noImageIcon} alt={"default"}/>
+        } else {
+           return <img src={this.props.video.image_url} alt={`${this.props.video.name}`}/>
+        }
+    }
+
     render () {
         const { video, currentUser, addToPurchase, removefromPurchase, currentUserVideos, currentPurchase } = this.props
         const { expanded, modifyForm } = this.state
@@ -50,7 +60,7 @@ class Videos extends React.Component {
                 <div><ModifyVideoForm video={video}/></div>:
                 <div>
                     <h3>{video.name}</h3>
-                    <img src={video.image_url} alt={`${video.name}`}/>
+                    <p>{this.getVideosImage()}</p>
                     <h4>£ {video.price}</h4>
                     {!currentUser.admin ?
                     <div>
