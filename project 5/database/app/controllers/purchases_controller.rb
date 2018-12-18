@@ -7,22 +7,21 @@ class PurchasesController < ApplicationController
     end
 
     def checkout
-        puts payment_params
-        @purchase = Purchase.find(payment_params[:purchase_id])
+        @purs = params[:purchase_ids].map {|id| Purchase.find(id)}
         customer = Stripe::Customer.create(
-            source: payment_params[:stripeToken],
-            email:  payment_params[:stripeEmail]
+            source: params[:stripeToken],
+            email:  params[:stripeEmail]
         )
         
         charge = Stripe::Charge.create(
             :customer    => customer.id,   # You should store this customer id and re-use it.
-            :amount      =>  payment_params[:total],
+            :amount      =>  params[:total],
             :description    =>  "Payment for purchase",
             :currency    => "gbp"
         )
 
-        @purchase.update(paid: true)
-        render json: {errors: "wait what?"}
+        @purs.map{|p| p.update(paid: true)}
+        render json: @purs
     
         rescue Stripe::CardError => e
           error = e.message
@@ -73,7 +72,7 @@ class PurchasesController < ApplicationController
     end
 
     def payment_params
-        params.require(:purchase).permit(:id, :total, :stripeToken, :stripeEmail, :purchase_id)
+        params.require(:purchase).permit(:id, :total, :stripeToken, :stripeEmail, purchase_ids: [])
     end
 
     def set_purchase

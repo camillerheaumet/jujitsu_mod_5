@@ -6,7 +6,7 @@ import CheckoutForm from './CheckoutForm';
 class Basket extends React.Component {
     state = {
         proceedPayment: false,
-        lastPurchaseId: 0
+        lastPurchaseIds: []
     }
 
     countTotalCost () {
@@ -30,7 +30,7 @@ class Basket extends React.Component {
             API.createPurchase(newPur).then(resp =>
                 this.setState({
                     proceedPayment: true,
-                    lastPurchaseId: resp.id
+                    lastPurchaseIds: [...this.state.lastPurchaseIds, resp.id]
                     // .then(window.location.reload())
                 })
             )
@@ -56,7 +56,7 @@ class Basket extends React.Component {
                     <div className="example">
                         <h1>Proceed to Payment</h1>
                         <Elements>
-                            <CheckoutForm total={this.countTotalCost() * 100} userEmail={currentUser.email} lastPurchaseId={this.state.lastPurchaseId}/>
+                            <CheckoutForm total={this.countTotalCost() * 100} userEmail={currentUser.email} lastPurchaseIds={this.state.lastPurchaseIds}/>
                         </Elements>
                         <button onClick={() => this.handleClick()}>Cancel</button>
                     </div>
